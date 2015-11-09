@@ -16,7 +16,7 @@ public class PartyBot extends UntypedActor {
 				  new Runnable() {
 				    @Override
 				    public void run() {
-				    	ActorSelection selection = getContext().system().actorSelection("/user/channels/*");
+				    	ActorSelection selection = context().system().actorSelection("/user/channels/*");
 				    	selection.tell(new Identify(identifyId), getSelf());
 				    }
 				}, context().system().dispatcher());
@@ -38,7 +38,6 @@ public class PartyBot extends UntypedActor {
 	            		channels.add(ref);
 	            		ref.tell(new JoinChannel(ref.path().toString()), getSelf());
 	            	}
-//	            	System.out.println(ref.path());
 	            }
 	        }
 		}else if (msg instanceof UserAdded){

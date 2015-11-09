@@ -13,12 +13,9 @@ public class ChannelManager extends UntypedActor {
 	public void onReceive(Object msg) throws Exception {
 		// TODO: Implement the required functionality.
 		if (msg instanceof GetOrCreateChannel) {
-//			GetOrCreateChannel cManager = (GetOrCreateChannel) msg;
-//			ActorRef channel =  getContext().actorOf(Props.create(Channel.class), cManager.name);
-//			getSender().tell(channel, getSelf());
 			dest = getSender();
 			channelName = ((GetOrCreateChannel) msg).name;
-			ActorSelection selection = getContext().actorSelection("/user/channels/"+channelName);
+			ActorSelection selection = context().actorSelection("/user/channels/"+channelName);
 			selection.tell(new Identify(identifyId), getSelf());
 			
 		} else if(msg instanceof ActorIdentity){
@@ -26,9 +23,8 @@ public class ChannelManager extends UntypedActor {
 		        if (identity.correlationId().equals(identifyId)) {
 		            ActorRef ref = identity.getRef();
 		            if (ref == null){
-//		            	getContext().stop(getSelf());		            	
-		            	ActorRef channel = getContext().actorOf(Props.create(Channel.class), channelName);
-		            	getContext().watch(channel);
+		            	ActorRef channel = context().actorOf(Props.create(Channel.class), channelName);
+		            	context().watch(channel);
 		            	dest.tell(channel, getSelf());
 		            }	            
 		            else {
@@ -36,7 +32,6 @@ public class ChannelManager extends UntypedActor {
 		            }
 		        }
 		}else
-			System.out.println("NOT   IMPLEMENTED HERE");
 			unhandled(msg);
 	}
 }
