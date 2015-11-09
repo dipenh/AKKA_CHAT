@@ -56,7 +56,7 @@ public class Joker extends UntypedActor {
 			channelRef = (ActorRef) msg;
 			jokeGenerator = genJokeGenerator();
 		}else if (msg instanceof String) { // (msg instanceof Object)
-			System.out.println("JOKE: "+msg);
+//			System.out.println("JOKE: "+msg);
 			channelRef.tell(new ChatMessage(channelName, msg.toString()), getSelf());
 		}else if (msg instanceof NewSession){
 			channelRef.tell(new AddUser(((NewSession) msg).session), getSelf());
@@ -69,11 +69,6 @@ public class Joker extends UntypedActor {
 		}
 	}
 	
-	@Override
-	public void aroundPreStart() {
-		// TODO Auto-generated method stub
-		super.aroundPreStart();
-	}
 	
 	private ActorRef genJokeGenerator(){
 		ActorRef jGenerator = context().actorOf(Props.create(JokeGenerator.class), jokeGenPath);
